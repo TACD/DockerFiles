@@ -21,18 +21,6 @@ RUN apt-get update && apt-get install -y \
 RUN rosdep init \
 && rosdep update
 
-# Intel driver experiment
-# RUN apt-get update && apt-get install -y libgl1-mesa-glx libgl1-mesa-dri mesa-utils xserver-xorg-video-all xvfb x11vnc
-
-# NVIDIA driver experiment
-#RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
-# RUN apt-get update && apt-get install -y kmod
-#RUN apt-get update && apt-get install --reinstall xserver-xorg-video-intel libgl1-mesa-glx libgl1-mesa-dri xserver-xorg-core xserver-xorg -y
-#RUN dpkg-reconfigure xserver-xorg
-#RUN cd /root
-#RUN curl http://us.download.nvidia.com/XFree86/Linux-x86_64/430.26/NVIDIA-Linux-x86_64-430.26.run -s -o NVIDIA.run
-#RUN chmod a+x ./NVIDIA.run
-#RUN ./NVIDIA.run -a -N --ui=none --no-kernel-module
 
 ## Set environment variables
 # Docker
@@ -98,4 +86,3 @@ COPY miro2 /root/.miro2
 COPY run.sh /usr/local/bin/run.sh
 RUN chmod +x /usr/local/bin/run.sh
 CMD /usr/local/bin/run.sh
-# CMD xvfb-run -s "-screen 0 640x480x24" glxgears & x11vnc -display :0 -bg -forever -nopw -quiet -listen localhost -xkb
