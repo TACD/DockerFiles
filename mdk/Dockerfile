@@ -22,18 +22,19 @@ ENV ROS_ROOT /opt/ros/$ROS_DISTRO/share/ros
 ENV MIRO_BRIDGE_FLAGS l
 ENV MIRO_DIR_BIN /root/mdk/bin/deb64
 ENV MIRO_DIR_CONFIG /root/.miro2/config
-ENV MIRO_DIR_DUMP /tmp/miro2/dump
+ENV MIRO_DIR_DUMP /root/tmp/miro2/dump
 ENV MIRO_DIR_LOG /tmp/miro2/log
 ENV MIRO_DIR_MDK /root/mdk
 ENV MIRO_DIR_ONBOARD /root/mdk/bin/onboard
 ENV MIRO_DIR_SHARE /root/mdk/share
-ENV MIRO_DIR_STATE /tmp/miro2/state
-ENV MIRO_DIR_TMP /tmp/miro2
+ENV MIRO_DIR_STATE /root/tmp/miro2/state
+ENV MIRO_DIR_TMP /root/tmp/miro2
 ENV MIRO_DIR_TRASH /root/.miro2/trash
 ENV MIRO_DIR_USER /root/.miro2
 ENV MIRO_EDITION 2
 ENV MIRO_MDK_RELEASE R190407
 ENV MIRO_MULTITOOL /root/mdk/bin/onboard/multitool.sh
+ENV MIRO_NETWORK_MODE static
 ENV MIRO_ROBOT_NAME miro
 ENV MIRO_ROS_RELEASE $ROS_DISTRO
 ENV MIRO_SYSTEM deb64
@@ -58,4 +59,5 @@ COPY miro2 /root/.miro2
 # COPY run.sh /usr/local/bin/run.sh
 # RUN chmod +x /usr/local/bin/run.sh
 # CMD /usr/local/bin/run.sh
+RUN mkdir -p /root/tmp/miro2/state
 CMD roscore
