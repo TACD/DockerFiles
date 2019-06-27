@@ -11,7 +11,7 @@ RUN mkdir src \
 	&& git clone https://github.com/SpineML/SpineCreator.git \
 	&& git clone https://github.com/BRAHMS-SystemML/brahms.git \
 	&& git clone https://github.com/SpineML/SpineML_PreFlight.git \
-	&& git clone https://github.com/SpineML/SpineML_2_BRAHMS.git /SpineML_2_BRAHMS
+	&& git clone https://github.com/SpineML/SpineML_2_BRAHMS.git /SpineML_2_BRAHMS \
 
 
 ## Compile any code that requires it
@@ -78,7 +78,6 @@ FROM ubuntu:bionic AS final
 
 # Install prerequisites
 RUN apt-get update && apt-get install -y \
-	doxygen \
 	libgraphviz-dev \
 	libgvc6 \
 	libpopt-dev \
@@ -92,7 +91,6 @@ RUN apt-get update && apt-get install -y \
 	python-dev \
 	python-numpy \
 	qtbase5-dev \
-	qtcreator \
 	xsltproc \
 	zlib1g-dev \
 && rm -rf /var/lib/apt/lists/*
@@ -114,7 +112,8 @@ ENV QT_X11_NO_MITSHM 1
 ENV XAUTHORITY /root/.Xauthority
 
 # BRAHMS
-ENV PATH $PATH:/usr/local/SystemML/BRAHMS/bin/
+ENV PATH 		$PATH:/usr/local/SystemML/BRAHMS/bin/
+ENV BRAHMS_NS	/usr/local/SystemML/Namespace
 
 # Run SpineCreator
 CMD spinecreator
