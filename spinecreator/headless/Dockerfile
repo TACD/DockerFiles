@@ -10,8 +10,8 @@ RUN mkdir src \
 	&& cd src \
 	&& git clone https://github.com/BRAHMS-SystemML/brahms.git \
 	&& git clone https://github.com/SpineML/SpineML_PreFlight.git \
-	&& git clone https://github.com/SpineML/SpineML_2_BRAHMS.git /SpineML_2_BRAHMS \
-	&& git clone https://github.com/ABRG-Models/MammalBot.git /MammalBot
+	&& git clone https://github.com/SpineML/SpineML_2_BRAHMS.git /SpineML_2_BRAHMS
+	# && git clone https://github.com/ABRG-Models/MammalBot.git /MammalBot
 
 
 ## Compile any code that requires it
@@ -73,6 +73,14 @@ RUN apt-get update && apt-get install -y \
 	python \
 	python-dev \
 	python-numpy \
+	# Needed for importing MiRo libraries
+	# python-opencv \	
+	# ros-melodic-ros-base \
+	ros-melodic-common-msgs \
+	ros-melodic-compressed-image-transport \
+	ros-melodic-image-transport \
+	ros-melodic-image-view \
+	ros-melodic-tf2-ros \
 	xsltproc \
 	zlib1g-dev \
 && rm -rf /var/lib/apt/lists/*
@@ -82,10 +90,13 @@ COPY --from=compile	/usr/local/SystemML			/usr/local/SystemML
 COPY --from=compile	/usr/local/bin				/usr/local/bin
 COPY --from=compile	/usr/local/share/man/man1	/usr/local/share/man
 COPY --from=source	/SpineML_2_BRAHMS			/root/SpineML_2_BRAHMS 
-COPY --from=source	/MammalBot					/root/MammalBot
+# COPY --from=source	/MammalBot					/root/MammalBot
 
-# Link BRAHMS bindings
-RUN ln -s	/root/MammalBot/bindings_examples/examples	/usr/local/SystemML/Namespace/examples
+# Symlink to BRAHMS bindings
+# RUN	ln -s /root/MammalBot/examples/bindings /usr/local/SystemML/Namespace/examples
+# RUN mkdir -p /usr/local/SystemML/Namespace/examples
+# ADD		/root/MammalBot/examples/bindings/examples/	/usr/local/SystemML/Namespace/examples
+# COPY	/root/MammalBot/examples/ros/examples	/usr/local/SystemML/Namespace/examples
 
 # Create persistent volume for SpineML_2_BRAHMS
 VOLUME /root/SpineML_2_BRAHMS
@@ -94,3 +105,6 @@ VOLUME /root/SpineML_2_BRAHMS
 # BRAHMS
 ENV PATH 		$PATH:/usr/local/SystemML/BRAHMS/bin/
 ENV BRAHMS_NS	/usr/local/SystemML/Namespace
+
+# Open a terminal
+# CMD	bash
