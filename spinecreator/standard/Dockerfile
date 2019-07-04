@@ -112,7 +112,7 @@ ENV QT_X11_NO_MITSHM 1
 ENV XAUTHORITY /root/.Xauthority
 
 # BRAHMS
-ENV PATH 		$PATH:/usr/local/SystemML/BRAHMS/bin/
+ENV PATH 		/usr/local/SystemML/BRAHMS/bin/:$PATH
 ENV BRAHMS_NS	/usr/local/SystemML/Namespace
 
 # Run SpineCreator
