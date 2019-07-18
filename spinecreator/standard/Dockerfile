@@ -13,7 +13,7 @@ RUN mkdir src \
 	&& git clone https://github.com/SpineML/SpineML_PreFlight.git \
 	&& git clone https://github.com/SpineML/SpineML_2_BRAHMS.git /SpineML_2_BRAHMS
 
-
+##########
 ## Compile any code that requires it
 FROM ubuntu:bionic AS compile
 
@@ -53,7 +53,7 @@ RUN mkdir src/brahms/build \
 	&& make -j4 \
 	&& make install
 
-# Fix BRAHMS - Some additional commands needed to move everything into place
+# Fix BRAHMS - Some additional commands needed to move component templates into place
 RUN cp -r src/brahms/framework/media/ /usr/local/SystemML/BRAHMS/ \
 	&& cp -r src/brahms/support/ /usr/local/SystemML/BRAHMS/ \
 	&& cp /usr/local/SystemML/BRAHMS/support/template/process/test.m /usr/local/SystemML/BRAHMS/support/template/process/1262/
@@ -72,7 +72,7 @@ RUN mkdir src/SpineML_PreFlight/build \
 RUN qmake -qt=qt5 -makefile src/SpineCreator/spinecreator.pro \
 	&& make
 
-
+##########
 ## Copy over our compiled programs and install only the prerequisites to run them
 FROM ubuntu:bionic AS final
 
@@ -95,25 +95,36 @@ RUN apt-get update && apt-get install -y \
 	zlib1g-dev \
 && rm -rf /var/lib/apt/lists/*
 
-# Copy program files
+# Define default username and IDs
+ARG USER=docker
+ARG USER_ID=1000
+ARG GROUP=${USER}
+ARG GROUP_ID=${USER_ID}
+
+# Create non-root user
+RUN groupadd -g ${GROUP_ID} ${GROUP} \
+	&& useradd -lmr -u ${USER_ID} -g ${GROUP} ${USER}
+
+# Copy program files (note that chown argument must be hardcoded)
 COPY --from=compile	/spinecreator				/bin/spinecreator
 COPY --from=compile	/usr/local/SystemML			/usr/local/SystemML
 COPY --from=compile	/usr/local/bin				/usr/local/bin
 COPY --from=compile	/usr/local/share/man/man1	/usr/local/share/man
-COPY --from=source	/SpineML_2_BRAHMS			/root/SpineML_2_BRAHMS 
+COPY --from=source --chown=1000	/SpineML_2_BRAHMS	/home/${USER}/SpineML_2_BRAHMS
 
 # Create persistent volume for SpineML_2_BRAHMS
-VOLUME /root/SpineML_2_BRAHMS
+VOLUME /home/${USER}/SpineML_2_BRAHMS
 
-# Set environment variables
-# Docker
+# Docker environment variables
 ENV DISPLAY :0
 ENV QT_X11_NO_MITSHM 1
-ENV XAUTHORITY /root/.Xauthority
 
-# BRAHMS
-ENV PATH 		/usr/local/SystemML/BRAHMS/bin/:$PATH
+# BRAHMS environment variables
 ENV BRAHMS_NS	/usr/local/SystemML/Namespace
+ENV PATH 		/usr/local/SystemML/BRAHMS/bin/:${PATH}
+
+# Set default user
+USER ${USER}
 
 # Run SpineCreator
 CMD spinecreator
