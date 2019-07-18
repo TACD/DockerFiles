@@ -17,6 +17,7 @@ docker run \
 --name spinecreator tacd/spinecreator
 ```
 3. After this, you can simply run `docker restart spinecreator` to start SpineCreator
+  * If you're feeling fancy, run `cp SpineCreator.desktop ~/.local/share/applications/; cp spineml.png ~/.local/share/icons/` to create a desktop launcher for SpineCreator
 
 ### Notes
 * This assumes your local UID is 1000 (the default for a single non-root user); check by entering `id $USER` at a terminal.
