@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=SpineCreator
+Comment=Neural Modelling
+GenericName=SpineCreator
+Exec=docker start spinecreator
+Icon=spineml
+Type=Application
+StartupNotify=true
+Categories=GNOME;GTK;Development;
+X-Desktop-File-Install-Version=0.23
