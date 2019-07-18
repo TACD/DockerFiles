@@ -7,7 +7,15 @@ DockerFile for the complete [SpineCreator](http://spineml.github.io/spinecreator
 
 ## Getting started
 1. Download the Docker image with `docker pull tacd/spinecreator`
-2. Start the Docker image with `docker run -v /tmp/.X11-unix:/tmp/.X11-unix -v <YOUR_MODEL_DIRECTORY>:/home/docker/Models -v <YOUR_OUTPUT_DIRECTORY>:/home/docker/SpineML_2_BRAHMS/temp -v /home/docker/SpineML_2_BRAHMS --name spinecreator tacd/spinecreator`
+2. Start the Docker image with
+```
+docker run \
+-v /tmp/.X11-unix:/tmp/.X11-unix `# Allows display of GUI` \
+-v <YOUR_MODEL_DIRECTORY>:/home/docker/Models `# Allows loading of models` \
+-v <YOUR_OUTPUT_DIRECTORY>:/home/docker/SpineML_2_BRAHMS/temp `# Allows access to output data from host` \
+-v /home/docker/SpineML_2_BRAHMS `# Allows permanent storage of data such as compiled model components` \
+--name spinecreator tacd/spinecreator
+```
 3. After this, you can simply run `docker restart spinecreator` to start SpineCreator
 
 ### Notes
