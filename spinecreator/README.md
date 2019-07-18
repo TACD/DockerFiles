@@ -7,8 +7,16 @@ DockerFile for the complete [SpineCreator](http://spineml.github.io/spinecreator
 
 ## Getting started
 1. Download the Docker image with `docker pull tacd/spinecreator`
-2. Start the Docker image with `docker run -v $XAUTHORITY:/root/.Xauthority -v /tmp/.X11-unix:/tmp/.X11-unix -v <YOUR_MODEL_DIRECTORY>:/root/Models -v <YOUR_OUTPUT_DIRECTORY>:/root/SpineML_2_BRAHMS/temp -v /root/SpineML_2_BRAHMS --name spinecreator tacd/spinecreator`
+2. Start the Docker image with
+```
+docker run \
+-v /tmp/.X11-unix:/tmp/.X11-unix `# Allows display of GUI` \
+-v <YOUR_MODEL_DIRECTORY>:/home/docker/Models `# Allows loading of models` \
+-v <YOUR_OUTPUT_DIRECTORY>:/home/docker/SpineML_2_BRAHMS/temp `# Allows access to output data` \
+-v /home/docker/SpineML_2_BRAHMS `# Allows persistent storage of compiled model components` \
+--name spinecreator tacd/spinecreator
+```
 3. After this, you can simply run `docker restart spinecreator` to start SpineCreator
 
 ### Notes
-* Directories and model data created by SpineCreator will be owned by root; you may wish to perform a `chown -R` on the host machine on any new model directories to resolve this.
+* This assumes your local UID is 1000 (the default for a single non-root user); check by entering `id $USER` at a terminal.
