@@ -118,8 +118,11 @@ COPY --from=compile	/usr/local/bin				/usr/local/bin
 COPY --from=compile	/usr/local/share/man/man1	/usr/local/share/man
 COPY --from=source --chown=1000	/SpineML_2_BRAHMS	/home/${USER}/SpineML_2_BRAHMS
 
+# Change S2B ownership (again, but seems to be necessary)
+RUN chown -R docker:docker /home/${USER}/SpineML_2_BRAHMS
+
 # Create persistent volume for SpineML_2_BRAHMS
-VOLUME /home/${USER}/SpineML_2_BRAHMS
+# VOLUME /home/${USER}/SpineML_2_BRAHMS
 
 # Docker environment variables
 ENV DISPLAY :0
