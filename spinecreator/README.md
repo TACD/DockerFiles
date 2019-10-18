@@ -20,3 +20,4 @@ docker run \
 
 ### Notes
 * This assumes your local UID is 1000 (the default for a single non-root user); check by entering `id $USER` at a terminal.
+* If you're feeling fancy, run `cp SpineCreator.desktop ~/.local/share/applications/; cp spineml.png ~/.local/share/icons/` to create a desktop launcher for SpineCreator
