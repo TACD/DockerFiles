@@ -6,19 +6,31 @@ FROM gazebo:libgazebo7-xenial
 RUN apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654 \
 && echo "deb http://packages.ros.org/ros/ubuntu `lsb_release -sc` main" > /etc/apt/sources.list.d/ros-latest.list
 
+# !! Try to get python-gi running for client_gui within Docker
+
 # Install ROS packages
 RUN apt-get update && apt-get install -y \
-	ros-kinetic-ros-base \
-	ros-kinetic-common-msgs \
-	ros-kinetic-compressed-image-transport \
-	ros-kinetic-image-transport \
-	ros-kinetic-image-view \
-	ros-kinetic-tf2-ros \
+	ros-kinetic-perception \
+#	python-gi \
+#	python-gi-cairo \
+#	python-matplotlib \
+#	python-tk \
+	python-pip \
+#	ros-kinetic-ros-base \
+#	ros-kinetic-common-msgs \
+#	ros-kinetic-compressed-image-transport \
+#	ros-kinetic-image-transport \
+#	ros-kinetic-image-view \
+#	ros-kinetic-tf2-ros \
 && rm -rf /var/lib/apt/lists/*
 
 # Bootstrap rosdep
 RUN rosdep init \
 && rosdep update
+
+# Install modules needed for the MiRo MDK
+RUN sudo pip install \
+	apriltag
 
 ##########
 # Docker environment variables
@@ -41,7 +53,26 @@ ENV GAZEBO_PLUGIN_PATH /root/mdk/bin/deb64
 ENV GAZEBO_RESOURCE_PATH /root/mdk/sim
 
 # MiRo environment variables
+ENV MIRO_BRIDGE_FLAGS l
+ENV MIRO_DIR_BIN /root/mdk/bin/deb64
 ENV MIRO_DIR_CONFIG /root/.miro2/config
+ENV MIRO_DIR_DUMP /tmp/miro2/dump
+ENV MIRO_DIR_LOG /tmp/miro2/log
+ENV MIRO_DIR_MDK /root/mdk
+ENV MIRO_DIR_ONBOARD /root/mdk/bin/onboard
+ENV MIRO_DIR_SHARE /root/mdk/share
+ENV MIRO_DIR_STATE /tmp/miro2/state
+ENV MIRO_DIR_TMP /tmp/miro2
+ENV MIRO_DIR_TRASH /root/.miro2/trash
+ENV MIRO_DIR_USER /root/.miro2
+ENV MIRO_EDITION 2
+ENV MIRO_MDK_RELEASE R191016
+ENV MIRO_MULTITOOL /root/mdk/bin/onboard/multitool.sh
+ENV MIRO_ROBOT_NAME miro
+ENV MIRO_ROS_RELEASE $ROS_DISTRO
+ENV MIRO_SYSTEM deb64
+ENV MIRO_TOKEN miro2
+ENV MIRO_USER_SETUP /root/.miro2/config/user_setup.bash
 
 # System environment variables
 ENV CMAKE_PREFIX_PATH /root/mdk/catkin_ws/install:/opt/ros/$ROS_DISTRO
@@ -49,29 +80,6 @@ ENV LD_LIBRARY_PATH /root/mdk/catkin_ws/install/lib:/opt/ros/$ROS_DISTRO/lib:/op
 ENV PATH /opt/ros/$ROS_DISTRO/bin:/root/bin:/root/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 ENV PKG_CONFIG_PATH /root/mdk/catkin_ws/install/lib/pkgconfig:/opt/ros/$ROS_DISTRO/lib/pkgconfig:/opt/ros/$ROS_DISTRO/lib/x86_64-linux-gnu/pkgconfig
 ENV PYTHONPATH /root/mdk/share/python:/root/mdk/catkin_ws/install/lib/python2.7/dist-packages:/opt/ros/$ROS_DISTRO/lib/python2.7/dist-packages
-
-
-## These variables are set by the MDK but are not needed unless running client_demo from within Docker
-#ENV MIRO_BRIDGE_FLAGS l
-#ENV MIRO_DIR_BIN /root/mdk/bin/deb64
-#ENV MIRO_DIR_DUMP /tmp/miro2/dump
-#ENV MIRO_DIR_LOG /tmp/miro2/log
-#ENV MIRO_DIR_MDK /root/mdk
-#ENV MIRO_DIR_ONBOARD /root/mdk/bin/onboard
-#ENV MIRO_DIR_SHARE /root/mdk/share
-#ENV MIRO_DIR_STATE /tmp/miro2/state
-#ENV MIRO_DIR_TMP /tmp/miro2
-#ENV MIRO_DIR_TRASH /root/.miro2/trash
-#ENV MIRO_DIR_USER /root/.miro2
-#ENV MIRO_EDITION 2
-#ENV MIRO_MDK_RELEASE R191016
-#ENV MIRO_MULTITOOL /root/mdk/bin/onboard/multitool.sh
-#ENV MIRO_ROBOT_NAME miro
-#ENV MIRO_ROS_RELEASE $ROS_DISTRO
-#ENV MIRO_SYSTEM deb64
-#ENV MIRO_TOKEN miro2
-#ENV MIRO_USER_SETUP /root/.miro2/config/user_setup.bash
-
 
 # Add MiRo MDK and config files
 # MDK available from http://labs.consequentialrobotics.com/miro-e/software/

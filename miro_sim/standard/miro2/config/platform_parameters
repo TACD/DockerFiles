@@ -1,4 +1,3 @@
-
 ################################################################
 #
 # this file contains the platform parameters. these affect the
@@ -53,7 +52,3 @@ touch_head_sensitivity=
 
 # demo flags
 demo_flags=
-
-
-
-

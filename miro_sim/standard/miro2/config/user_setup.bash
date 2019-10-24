@@ -87,7 +87,7 @@ export MIRO_STATIC_IP=""
 #
 # This value locates the ROS master on the network. In addition, if it is
 # set to "" (empty), a ROS master is started automatically at boot time.
-export ROS_MASTER_IP="127.0.0.1"
+export ROS_MASTER_IP=""
 
 # MIRO_ROBOT_NAME
 #
