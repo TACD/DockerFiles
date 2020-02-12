@@ -1,8 +1,3 @@
-
-miro_sim/mdk/
-
-miro_sim/miro2/
-
-mdk/mdk/
-
-mdk/miro2/
+# Exclude MDK
+**/mdk
+**/miro2

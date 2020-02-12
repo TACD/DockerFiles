@@ -28,13 +28,26 @@ RUN apt-get update && apt-get install -y \
 RUN rosdep init \
 && rosdep update
 
-# Install modules needed for the MiRo MDK
-RUN sudo pip install \
-	apriltag==0.0.16
+# Update module installation framework
+RUN pip install --upgrade \
+	pip \
+#	wheel \
+	setuptools \
+
+# Install modules needed for the MiRo MDK and Dashboard
+&& sudo pip install --upgrade \
+	apriltag==0.0.16 \
+	dash==1.9.0 \
+	dash-bootstrap-components==0.8.3 \
+	dash-daq==0.3.3 \
+	opencv-python-headless==4.2.0.32 \
+	Pillow==6.2.1
+	# PyYAML==5.1.2
 
 ##########
 # Docker environment variables
-ENV DISPLAY :0
+#ENV DISPLAY :0
+ENV DISPLAY :1
 ENV QT_X11_NO_MITSHM 1
 ENV XAUTHORITY /root/.Xauthority
 
