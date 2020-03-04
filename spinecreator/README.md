@@ -6,12 +6,10 @@ DockerFile for the complete [SpineCreator](http://spineml.github.io/spinecreator
 4. [SpineCreator](https://github.com/SpineML/SpineCreator)
 
 ## Getting started
-### macOS only
-1. Download, install, and run [xQuartz](https://www.xquartz.org)
-2. Set `DISPLAY=host.docker.internal:0`
-
-### General
 1. Download the Docker image with `docker pull tacd/spinecreator`
+  * macOS only:  
+    1. Download, install, and run [xQuartz](https://www.xquartz.org)
+    2. Set `DISPLAY=host.docker.internal:0`
 2. Start the Docker image with
 ```
 docker run \
