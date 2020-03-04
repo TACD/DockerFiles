@@ -6,6 +6,11 @@ DockerFile for the complete [SpineCreator](http://spineml.github.io/spinecreator
 4. [SpineCreator](https://github.com/SpineML/SpineCreator)
 
 ## Getting started
+### macOS only
+1. Download, install, and run [xQuartz](https://www.xquartz.org)
+2. Set `DISPLAY=host.docker.internal:0`
+
+### General
 1. Download the Docker image with `docker pull tacd/spinecreator`
 2. Start the Docker image with
 ```
@@ -14,7 +19,7 @@ docker run \
 -v <YOUR_MODEL_DIRECTORY>:/home/docker/Models `# Allows loading of models` \
 -v <YOUR_OUTPUT_DIRECTORY>:/home/docker/SpineML_2_BRAHMS/temp `# Allows access to output data` \
 -v /home/docker/SpineML_2_BRAHMS `# Allows persistent storage of compiled model components` \
---name spinecreator tacd/spinecreator
+-e DISPLAY --name spinecreator tacd/spinecreator
 ```
 3. After this, you can simply run `docker restart spinecreator` to start SpineCreator
 
