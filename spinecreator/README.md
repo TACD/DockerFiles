@@ -9,7 +9,14 @@ DockerFile for the complete [SpineCreator](http://spineml.github.io/spinecreator
 1. Download the Docker image with `docker pull tacd/spinecreator`
   * macOS only:  
     1. Download, install, and run [xQuartz](https://www.xquartz.org)
-    2. Set `DISPLAY=host.docker.internal:0`
+    2. Run:
+    ```
+    export HOSTNAME=`hostname`
+    xhost + ${hostname}
+    DISPLAY=${HOSTNAME}:0
+    ```
+    While using `xhost +` to grant universal access to the X server is insecure, it's less of a problem on macOS since XQuartz is unlikely to be left running in the background.
+    
 2. Start the Docker image with
 ```
 docker run \
