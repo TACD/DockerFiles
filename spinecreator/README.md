@@ -36,8 +36,8 @@ docker run \
 -v /home/docker/SpineML_2_BRAHMS `# Allows persistent storage of compiled model components` \
 -e DISPLAY --name spinecreator tacd/spinecreator
 ```
-3. After this, you can simply run `docker restart spinecreator` to start SpineCreator
+3. After this first initialsation, you can simply run `docker restart spinecreator` to start SpineCreator again in future.
 
 ### Notes
-* This assumes your local UID is 1000 (the default for a single non-root user); check by entering `id $USER` at a terminal.
-* If you're feeling fancy, run `cp SpineCreator.desktop ~/.local/share/applications/; cp spineml.png ~/.local/share/icons/` to create a desktop launcher for SpineCreator
+* This assumes your local UID is 1000 (the default for a single non-root user); check by entering `id $USER` at a terminal
+* If you're feeling fancy, run `cp SpineCreator.desktop ~/.local/share/applications/; cp spineml.png ~/.local/share/icons/` on Linux to create a desktop launcher for SpineCreator
