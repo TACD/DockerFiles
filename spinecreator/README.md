@@ -7,16 +7,26 @@ DockerFile for the complete [SpineCreator](http://spineml.github.io/spinecreator
 
 ## Getting started
 1. Download the Docker image with `docker pull tacd/spinecreator`
-  * macOS only:  
-    1. Download, install, and run [xQuartz](https://www.xquartz.org)
-    2. Run:
-    ```
-    export HOSTNAME=`hostname`
-    xhost + ${hostname}
-    DISPLAY=${HOSTNAME}:0
-    ```
-    While using `xhost +` to grant universal access to the X server is insecure, it's less of a problem on macOS since XQuartz is unlikely to be left running in the background.
-    
+   ### macOS only
+   1. Download, install, and run [xQuartz](https://www.xquartz.org)
+   2. Run:
+   ```
+   export HOSTNAME=`hostname`
+   xhost + ${hostname}
+   DISPLAY=${HOSTNAME}:0
+   ```
+   While using `xhost +` to grant universal access to the X server is insecure, it's less of a problem on macOS since XQuartz is unlikely to be left running in the background.
+   
+   If SpineCreator still won't appear in step 2 below, try granting access via IP instead:
+   ```
+   export IP=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')
+   xhost + ${IP}
+   DISPLAY=${IP}:0
+   ```
+   …ensuring that XQuartz is set to allow connections from network clients:
+   ![](./assets/x11_preferences_security.png)
+   … and possibly replacing `en0` with `en1` if your local IP is obtained over Wi-Fi.
+     
 2. Start the Docker image with
 ```
 docker run \
