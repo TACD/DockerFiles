@@ -106,11 +106,15 @@ RUN groupadd -g ${GROUP_ID} ${GROUP} \
 	&& useradd -lmr -u ${USER_ID} -g ${GROUP} ${USER}
 
 # Copy program files (note that chown argument must be hardcoded)
-COPY --from=compile	/spinecreator				/bin/spinecreator
-COPY --from=compile	/usr/local/SystemML			/usr/local/SystemML
-COPY --from=compile	/usr/local/bin				/usr/local/bin
+COPY --from=compile	/spinecreator			/bin/spinecreator
+COPY --from=compile	/usr/local/SystemML		/usr/local/SystemML
+COPY --from=compile	/usr/local/bin			/usr/local/bin
 COPY --from=compile	/usr/local/share/man/man1	/usr/local/share/man
 COPY --from=source --chown=1000	/SpineML_2_BRAHMS	/home/${USER}/SpineML_2_BRAHMS
+
+# Add script to allow connection modifications from command line
+ADD	./modify_connections.sh	/home/${USER}/
+RUN chmod +x /home/${USER}/modify_connections.sh
 
 # Create persistent volume for SpineML_2_BRAHMS
 VOLUME /home/${USER}/SpineML_2_BRAHMS
@@ -121,7 +125,7 @@ ENV QT_X11_NO_MITSHM 1
 
 # BRAHMS environment variables
 ENV BRAHMS_NS	/usr/local/SystemML/Namespace
-ENV PATH 		/usr/local/SystemML/BRAHMS/bin/:${PATH}
+ENV PATH 	/usr/local/SystemML/BRAHMS/bin/:${PATH}
 
 # Set default user
 USER ${USER}

@@ -1,4 +1,6 @@
-# The MiRo simulator uses Gazebo 7, which requires a ROS Kinetic install and thus Ubuntu 16 (Xenial)
+# This builds an MDK image for the VIRTUAL MiRo robot
+
+# The MiRo simulator uses Gazebo 7, which requires ROS Kinetic and thus Ubuntu 16 (Xenial)
 FROM gazebo:libgazebo7-xenial
 
 ##########
@@ -6,48 +8,41 @@ FROM gazebo:libgazebo7-xenial
 RUN apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654 \
 && echo "deb http://packages.ros.org/ros/ubuntu `lsb_release -sc` main" > /etc/apt/sources.list.d/ros-latest.list
 
-# !! Try to get python-gi running for client_gui within Docker
+# TODO: Include (and test) python-gi for running client_gui
 
 # Install ROS packages
 RUN apt-get update && apt-get install -y \
 	ros-kinetic-perception \
-#	python-gi \
-#	python-gi-cairo \
-#	python-matplotlib \
-#	python-tk \
 	python-pip \
-#	ros-kinetic-ros-base \
-#	ros-kinetic-common-msgs \
-#	ros-kinetic-compressed-image-transport \
-#	ros-kinetic-image-transport \
-#	ros-kinetic-image-view \
-#	ros-kinetic-tf2-ros \
 && rm -rf /var/lib/apt/lists/*
 
 # Bootstrap rosdep
 RUN rosdep init \
 && rosdep update
-
+	
 # Update module installation framework
 RUN pip install --upgrade \
-	pip \
-#	wheel \
+ 	pip \
+&& pip install --upgrade \
 	setuptools \
-
-# Install modules needed for the MiRo MDK and Dashboard
-&& sudo pip install --upgrade \
+	wheel \ 	
+# Install modules needed for various projects
+&& pip install --upgrade --ignore-installed \
+	# MiRo MDK
 	apriltag==0.0.16 \
-	dash==1.9.0 \
-	dash-bootstrap-components==0.8.3 \
-	dash-daq==0.3.3 \
+	# Dashboard
+	dash==1.16.2 \
+	dash-bootstrap-components==0.10.6 \
+	dash-daq==0.5.0 \
 	opencv-python-headless==4.2.0.32 \
-	Pillow==6.2.1
-	# PyYAML==5.1.2
+	Pillow==6.2.2 \
+	PyYAML==5.3.1 \
+	# Hypothalamus model
+	scipy==1.2.3
 
 ##########
 # Docker environment variables
-#ENV DISPLAY :0
-ENV DISPLAY :1
+ENV DISPLAY :0
 ENV QT_X11_NO_MITSHM 1
 ENV XAUTHORITY /root/.Xauthority
 
@@ -79,7 +74,7 @@ ENV MIRO_DIR_TMP /tmp/miro2
 ENV MIRO_DIR_TRASH /root/.miro2/trash
 ENV MIRO_DIR_USER /root/.miro2
 ENV MIRO_EDITION 2
-ENV MIRO_MDK_RELEASE R191016
+ENV MIRO_MDK_RELEASE R200720
 ENV MIRO_MULTITOOL /root/mdk/bin/onboard/multitool.sh
 ENV MIRO_ROBOT_NAME miro
 ENV MIRO_ROS_RELEASE $ROS_DISTRO
@@ -97,7 +92,7 @@ ENV PYTHONPATH /root/mdk/share/python:/root/mdk/catkin_ws/install/lib/python2.7/
 # Add MiRo MDK and config files
 # MDK available from http://labs.consequentialrobotics.com/miro-e/software/
 # .miro2 directory generated from a successful MDK install
-COPY mdk /root/mdk/
+COPY mdk-200720 /root/mdk/
 COPY miro2 /root/.miro2
 
 # Execute command
