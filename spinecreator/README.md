@@ -12,7 +12,7 @@ DockerFile for the complete [SpineCreator](http://spineml.github.io/spinecreator
    2. Run:
    ```
    export HOSTNAME=`hostname`
-   xhost + ${hostname}
+   xhost + ${HOSTNAME}
    DISPLAY=${HOSTNAME}:0
    ```
    While using `xhost +` to grant universal access to the X server is insecure, it's less of a problem on macOS since XQuartz is unlikely to be left running in the background.
