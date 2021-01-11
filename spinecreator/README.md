@@ -36,7 +36,7 @@ docker run \
 -v /home/docker/SpineML_2_BRAHMS `# Allows persistent storage of compiled model components` \
 -e DISPLAY --name spinecreator tacd/spinecreator
 ```
-3. After this first initialsation, you can simply run `docker restart spinecreator` to start SpineCreator again in future.
+3. After this first initialisation, you can simply run `docker restart spinecreator` to start SpineCreator again in future.
 
 ### Notes
 * This assumes your local UID is 1000 (the default for a single non-root user); check by entering `id $USER` at a terminal
